@@ -74,13 +74,21 @@ WSGI_APPLICATION = 'ShpacooAlmanac.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'NAME': 'shpacoo',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'USER': 'razhel',
-        'PASSWORD': 'H45l0111',
-        'HOST': 'localhost'
+        'PASSWORD': '!Poland123',
+        'HOST': 'db',
+        'PORT': 5432
     }
 }
 
