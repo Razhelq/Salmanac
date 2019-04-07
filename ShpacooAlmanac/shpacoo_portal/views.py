@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
-from ShpacooAlmanac.shpacoo_portal.forms import UserCreateForm, LoginForm
+from shpacoo_portal.forms import UserCreateForm, LoginForm
 
 
 class TestView(View):
@@ -25,14 +25,14 @@ class UserCreateView(View):
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
             return redirect('login')
-        return redirect('client-create')
+        return redirect('user-create')
 
 
 class LoginView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             form = LoginForm()
-            return request, 'login.html', {'form': form}
+            return render(request, 'login.html', {'form': form})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -40,6 +40,6 @@ class LoginView(View):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user:
                 login(request, user)
-                return redirect('test)
+                return redirect('test')
         return redirect('login')
 
