@@ -16,12 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from shpacoo_portal.views import TestView, UserCreateView, LoginView
+from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistView
 
-
-urlpatterns = {
+urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^test/$', TestView.as_view(), name='test'),
     url(r'^$', UserCreateView.as_view(), name='user-create'),
     url(r'^login/$', LoginView.as_view(), name='login'),
-}
+    url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist')
+]

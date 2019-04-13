@@ -3,3 +3,8 @@ psycopg2>=2.7,<3.0
 django-heroku
 dj-database-url
 Pillow
+beautifulsoup4==4.7.1
+bs4==0.0.1
+pytz==2018.9
+soupsieve==1.9
+sqlparse==0.3.0

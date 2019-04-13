@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="{% url 'user-create' %}" method="POST">
+    <form action="{% url 'add-artist' %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add</button>
