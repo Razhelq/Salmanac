@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import re
 from datetime import datetime
 
 import bs4, requests
@@ -71,7 +72,7 @@ class AddArtistView(View):
 
 class FindAlbumView(View):
 
-    def get(self):
+    def get(self, request, id):
         """
         check what is current month
         for each upcoming month
@@ -82,14 +83,29 @@ class FindAlbumView(View):
                 create_record()
         :return:
         """
-        # current_month = datetime.now().strftime('%m')[1:]
-        # for month in range(int(current_month), 13):
-        #     scrapped_website = requests.get(f'https://hiphopdx.com/release-dates?month={i}')
-        #     soup = bs4.BeautifulSoup(scrapped_website.text, features='html.parser')
-        #     albums = soup.select('.album')
-        #     for album in albums:
-        #         print(album)
-        #     print(albums)
+        current_month = datetime.now().strftime('%m')[1:]
+        for month in range(int(current_month), 13):
+            scrapped_website = requests.get(f'https://hiphopdx.com/release-dates?month={month}')
+            soup = bs4.BeautifulSoup(scrapped_website.text, features='html.parser')
+            albums = soup.select('.album a')
+            for album in albums:
+                if album.em:
+                    # print(len(album.find_all_previous('p')))
+                    date = album.find_all_previous('p')[1].text
+                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
+                        print(date)
+                    else:
+                        all_previous_p_tags = album.find_all_previous('p')
+                        for p_tag in all_previous_p_tags:
+                            date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
+                            if date:
+                                print(date[0])
+                                break
+                            # print(re.search(r'[a-zA-Z]{3}\W[0-9]{1,2}', str(i)))
+                        # print(re.search(r'[a-zA-Z]{3}\W[0-9]{1,2}', aaa))
+                    print(album.text.replace(album.em.text, ''))
+                    print(album.em.text)
+
 
 
 
