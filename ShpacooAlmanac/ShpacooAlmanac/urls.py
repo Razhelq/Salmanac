@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^$', UserCreateView.as_view(), name='user-create'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist')
+
 ]

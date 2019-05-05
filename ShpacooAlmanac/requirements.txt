@@ -8,3 +8,4 @@ bs4==0.0.1
 pytz==2018.9
 soupsieve==1.9
 sqlparse==0.3.0
+requests==2.21.0

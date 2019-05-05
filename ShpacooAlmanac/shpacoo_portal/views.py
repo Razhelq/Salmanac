@@ -62,12 +62,13 @@ class AddArtistView(View):
         form = AddArtistForm(request.POST)
         if form.is_valid():
             artist_name = form.cleaned_data['name']
-            Artist.objects.create(name=artist_name)
+            artist = Artist.objects.create(name=artist_name)
+            artist.user.add(User.objects.get(username=request.user))
             self.find_picture(artist_name)
             return redirect('test')
 
     def find_picture(self, artist_name):
-        ...
+        pass
 
 
 class FindAlbumView(View):
