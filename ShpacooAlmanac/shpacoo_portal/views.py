@@ -7,12 +7,12 @@ from datetime import datetime
 import bs4, requests
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.views import View
 
-
 from shpacoo_portal.forms import UserCreateForm, LoginForm, AddArtistForm
-from shpacoo_portal.models import Artist
+from shpacoo_portal.models import Artist, Album
 
 
 class TestView(View):
@@ -62,10 +62,13 @@ class AddArtistView(View):
         form = AddArtistForm(request.POST)
         if form.is_valid():
             artist_name = form.cleaned_data['name']
-            artist = Artist.objects.create(name=artist_name)
-            artist.user.add(User.objects.get(username=request.user))
-            self.find_picture(artist_name)
-            return redirect('test')
+            try:
+                Artist.objects.get(name=artist_name)
+            except ObjectDoesNotExist:
+                artist = Artist.objects.create(name=artist_name)
+                artist.user.add(User.objects.get(username=request.user))
+                self.find_picture(artist_name)
+                return redirect('find-album', id=artist.id)
 
     def find_picture(self, artist_name):
         pass
@@ -74,16 +77,6 @@ class AddArtistView(View):
 class FindAlbumView(View):
 
     def get(self, request, id):
-        """
-        check what is current month
-        for each upcoming month
-            scrap website with bs4
-            find any matchin record
-            if there is matching record:
-                get title and release date
-                create_record()
-        :return:
-        """
         current_month = datetime.now().strftime('%m')[1:]
         for month in range(int(current_month), 13):
             scrapped_website = requests.get(f'https://hiphopdx.com/release-dates?month={month}')
@@ -91,56 +84,30 @@ class FindAlbumView(View):
             albums = soup.select('.album a')
             for album in albums:
                 if album.em:
-                    # print(len(album.find_all_previous('p')))
-                    date = album.find_all_previous('p')[1].text
-                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
-                        print(date)
-                    else:
-                        all_previous_p_tags = album.find_all_previous('p')
-                        for p_tag in all_previous_p_tags:
-                            date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
-                            if date:
-                                print(date[0])
-                                break
-                            # print(re.search(r'[a-zA-Z]{3}\W[0-9]{1,2}', str(i)))
-                        # print(re.search(r'[a-zA-Z]{3}\W[0-9]{1,2}', aaa))
-                    print(album.text.replace(album.em.text, ''))
-                    print(album.em.text)
+                    artist = Artist.objects.get(id=id)
+                    if ''.join(album.em.text.lower().split()) == ''.join(artist.name.lower().split()):
+                        date = album.find_all_previous('p')[1].text
+                        if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
+                            date = datetime.strptime(date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                        else:
+                            all_previous_p_tags = album.find_all_previous('p')
+                            for p_tag in all_previous_p_tags:
+                                date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
+                                if date:
+                                    date = datetime.strptime(date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                                    break
+                        title = album.text.replace(album.em.text, '')
+                        try:
+                            Album.objects.get(title=title)
+                        except ObjectDoesNotExist:
+                            Album.objects.create(title=title, release_date=date, artist=artist)
+        return redirect('display-albums')
 
 
+class DisplayAlbumsView(View):
 
+    def get(self, request):
+        artists = Artist.objects.filter(user__username=request.user)
+        albums = Album.objects.filter(artist__in=artists)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user})

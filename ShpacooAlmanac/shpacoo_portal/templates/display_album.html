@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for artist in artists %}
+        {{ artist.name }}<br><br>
+        {% for album in albums %}
+            {% if album.artist.name == artist.name %}
+                {{ album.title }}<br>
+                {{ album.release_date|date:'M d, Y' }}<br><br><br>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
