@@ -20,6 +20,11 @@ class TestView(View):
         return render(request, 'test.html')
 
 
+class IndexView(View):
+    def get(self, request):
+        return render(request, 'index.html')
+
+
 class UserCreateView(View):
 
     def get(self, request):
