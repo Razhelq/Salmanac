@@ -116,3 +116,12 @@ class DisplayAlbumsView(View):
         albums = Album.objects.filter(artist__in=artists)
 
         return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user})
+
+
+class DeleteArtistView(View):
+
+    def post(self, request, id):
+        Artist.objects.get(id=id).delete()
+        return redirect('display-albums')
+
+
