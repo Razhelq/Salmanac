@@ -82,6 +82,14 @@ class AddArtistView(View):
 class FindAlbumView(View):
 
     def get(self, request, id):
+        HipHopDxScraper.get(self, request, id)
+        GeniusScraper.get(self, request, id)
+        return redirect('display-albums')
+
+
+class HipHopDxScraper(View):
+
+    def get(self, request, id):
         current_month = datetime.now().strftime('%m')[1:]
         for month in range(int(current_month), 13):
             scrapped_website = requests.get(f'https://hiphopdx.com/release-dates?month={month}')
@@ -106,7 +114,13 @@ class FindAlbumView(View):
                             Album.objects.get(title=title)
                         except ObjectDoesNotExist:
                             Album.objects.create(title=title, release_date=date, artist=artist)
-        return redirect('display-albums')
+
+
+class GeniusScraper(View):
+
+    def get(self, request, id):
+        ...
+
 
 
 class DisplayAlbumsView(View):
@@ -120,7 +134,7 @@ class DisplayAlbumsView(View):
 
 class DeleteArtistView(View):
 
-    def post(self, request, id):
+    def get(self, request, id):
         Artist.objects.get(id=id).delete()
         return redirect('display-albums')
 
