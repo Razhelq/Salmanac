@@ -122,9 +122,13 @@ class GeniusScraper(View):
         current_month = datetime.now().strftime('%m')[1:]
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
                   'November', 'December']
+        sought_artist = Artist.objects.get(id=id)
         for month in range(int(current_month), 13):
-            scrapped_website = requests.get(
-                f"https://genius.com/Genius-{months[month]}-2019-album-release-calendar-annotated")
+            try:
+                scrapped_website = requests.get(
+                    f"https://genius.com/Genius-{months[month]}-2019-album-release-calendar-annotated")
+            except IndexError:
+                break
             soup = bs4.BeautifulSoup(scrapped_website.text, features='html.parser')
             page = soup.select('p')
             splited_months = page[0].text.split('\n\n')
@@ -136,12 +140,20 @@ class GeniusScraper(View):
                     month_data_dict[month_data[day][0]] = []
                     for album in range(1, len(month_data[day])):
                         month_data_dict[month_data[day][0]].append(month_data[day][album])
+            print(month_data_dict)
             for date, albums in month_data_dict.items():
                 for album in albums:
-                    album_splited = [al.strip() for al in album.split('- ') if
-                                     al.strip()[1] != '/' or al.strip()[2] != '/']
-                    print(album_splited)
-            print(month_data_dict)
+                    artist_name = album.split(' - ')[0].lower()
+                    if sought_artist.lower() == artist_name:
+                        if date != 'TBA' and date:
+                            release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
+                        else:
+                            release_date = 0
+                        title = ' '.join(album.split(' - ')[1:(-1 if '/' in album.split(' - ')[-1] else 0)])
+                        try:
+                            Album.objects.create(title=title, release_date=release_date, artist=sought_artist)
+                        except:
+                            pass
             
 
 class DisplayAlbumsView(View):
