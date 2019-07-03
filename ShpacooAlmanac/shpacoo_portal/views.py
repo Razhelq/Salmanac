@@ -68,12 +68,13 @@ class AddArtistView(View):
         if form.is_valid():
             artist_name = form.cleaned_data['name']
             try:
-                Artist.objects.get(name=artist_name)
+                artist = Artist.objects.get(name=artist_name)
             except ObjectDoesNotExist:
-                artist = Artist.objects.create(name=artist_name)
+                Artist.objects.create(name=artist_name)
+                artist = Artist.objects.get(name=artist_name)
                 artist.user.add(User.objects.get(username=request.user))
                 self.find_picture(artist_name)
-                return redirect('find-album', id=artist.id)
+            return redirect('find-album', id=artist.id)
 
     def find_picture(self, artist_name):
         pass
@@ -97,8 +98,8 @@ class HipHopDxScraper(View):
             albums = soup.select('.album a')
             for album in albums:
                 if album.em:
-                    artist = Artist.objects.get(id=id)
-                    if ''.join(album.em.text.lower().split()) == ''.join(artist.name.lower().split()):
+                    sought_artist = Artist.objects.get(id=id)
+                    if ''.join(album.em.text.lower().split()) == ''.join(sought_artist.name.lower().split()):
                         date = album.find_all_previous('p')[1].text
                         if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
                             date = datetime.strptime(date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
@@ -113,7 +114,7 @@ class HipHopDxScraper(View):
                         try:
                             Album.objects.get(title=title)
                         except ObjectDoesNotExist:
-                            Album.objects.create(title=title, release_date=date, artist=artist)
+                            Album.objects.create(title=title, release_date=date, artist=sought_artist)
 
 
 class GeniusScraper(View):
@@ -140,20 +141,24 @@ class GeniusScraper(View):
                     month_data_dict[month_data[day][0]] = []
                     for album in range(1, len(month_data[day])):
                         month_data_dict[month_data[day][0]].append(month_data[day][album])
-            print(month_data_dict)
+            # print(month_data_dict)
             for date, albums in month_data_dict.items():
                 for album in albums:
                     artist_name = album.split(' - ')[0].lower()
-                    if sought_artist.lower() == artist_name:
+                    print('name ' + sought_artist.name.lower() + ' ' + artist_name.lower())
+                    if sought_artist.name.lower() == artist_name.lower():
                         if date != 'TBA' and date:
                             release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
                         else:
                             release_date = 0
                         title = ' '.join(album.split(' - ')[1:(-1 if '/' in album.split(' - ')[-1] else 0)])
+                        print(title)
+                        print(release_date)
+                        print(sought_artist)
                         try:
+                            Album.objects.get(title=title)
+                        except ObjectDoesNotExist:
                             Album.objects.create(title=title, release_date=release_date, artist=sought_artist)
-                        except:
-                            pass
             
 
 class DisplayAlbumsView(View):
@@ -161,7 +166,6 @@ class DisplayAlbumsView(View):
     def get(self, request):
         artists = Artist.objects.filter(user__username=request.user)
         albums = Album.objects.filter(artist__in=artists)
-
         return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user})
 
 

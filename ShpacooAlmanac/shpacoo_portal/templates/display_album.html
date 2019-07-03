@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    {% for artist in artists %}
-    {{ artist.name }} <a href="{% url 'delete-artist' artist.id %}"><i>Remove artist</i></a><br><br>
+    {% for artist in artists|dictsort:"name" %}
+        {{ artist.name }} <a href="{% url 'delete-artist' artist.id %}"><i>Remove artist</i></a><br><br>
         {% for album in albums %}
             {% if album.artist.name == artist.name %}
                 {{ album.title }}<br>
