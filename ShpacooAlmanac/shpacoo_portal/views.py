@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 
 import re
+import bs4
+import requests
 from datetime import datetime
 
-import bs4, requests
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -78,6 +79,14 @@ class AddArtistView(View):
 
     def find_picture(self, artist_name):
         pass
+
+
+class Scheduled_Album_Finder(View):
+
+    def get(self, request):
+        artists = Artist.objects.all()
+        for artist in artists:
+            FindAlbumView(self, request, artist.id)
 
 
 class FindAlbumView(View):
