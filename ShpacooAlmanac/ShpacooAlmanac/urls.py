@@ -20,7 +20,7 @@ from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistV
     IndexView, DeleteArtistView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^razhel/', admin.site.urls),
     url(r'^index/$', IndexView.as_view(), name='index'),
     url(r'^test/$', TestView.as_view(), name='test'),
     url(r'^$', UserCreateView.as_view(), name='user-create'),
