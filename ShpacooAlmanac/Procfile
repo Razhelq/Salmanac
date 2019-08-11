@@ -1,1 +1,2 @@
 web: python3 manage.py runserver
+worker: python manage.py celery worker -B -l info

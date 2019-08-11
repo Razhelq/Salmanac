@@ -10,3 +10,4 @@ soupsieve==1.9
 sqlparse==0.3.0
 requests==2.21.0
 celery
+jsonfield

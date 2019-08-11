@@ -119,3 +119,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+
+# Connections limit
+BROKER_POOL_LIMIT = 3
+
+
+# CloudAMQP RabbitMQ url
+BROKER_URL = 'amqp://kbqcknng:dGfMhSx4bOSjalldkfA6WF9Fwylkx4H0@eagle.rmq.cloudamqp.com/kbqcknng'
