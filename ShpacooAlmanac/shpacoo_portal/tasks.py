@@ -19,4 +19,4 @@ def find_albums_task():
     Scheduled_Album_Finder.get()
 
 
-    
+
