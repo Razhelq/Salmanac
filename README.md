@@ -1,1 +1,1 @@
-# SchpacooAlmanac
+# Salmanac
