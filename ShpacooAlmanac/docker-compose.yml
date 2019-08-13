@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     image: postgres
-  web:
+  web: &python
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -11,4 +11,15 @@ services:
     ports:
       - "8000:8000"
     depends_on:
+      - db
+      - rabbitmq
+      - celery_worker
+  rabbitmq:
+    image: rabbitmq:3.7-alpine
+  celery_worker:
+    <<: *python
+    command: celery worker --loglevel=info
+    ports: []
+    depends_on:
+      - rabbitmq
       - db

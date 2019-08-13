@@ -1,20 +1,38 @@
+# # Create your tasks here
+# from __future__ import absolute_import, unicode_literals
+# from celery import shared_task
+#
+#
+# @shared_task
+# def add(x, y):
+#     return x + y
+#
+#
+# @shared_task
+# def mul(x, y):
+#     return x * y
+#
+#
+# @shared_task
+# def xsum(numbers):
+#     return sum(numbers)
+#
+#
+
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
 from builtins import Exception
 
-from celery.task.schedules import crontab
-from celery.decorators import periodic_task
-from celery.utils.log import get_task_logger
 from datetime import datetime
-from myapp.models import TaskHistory
 
+import celery
+
+from shpacoo_portal.models import TaskHistory
 from shpacoo_portal.views import Scheduled_Album_Finder
 
-logger = get_task_logger(__name__)
-
-
-@periodic_task(run_every=(crontab(hour="*", minute="*", day_of_week="*")), ignore_result=True)
+@celery.task
 def find_albums_task():
-    logger.info("Start task")
+    # logger.info("Start task")
     now = datetime.now()
     date_now = now.strftime("%d-%m-%Y %H:%M:%S")
     name = 'Album finder task'
@@ -26,7 +44,7 @@ def find_albums_task():
     task_history = TaskHistory.objects.get_or_create(name=name)[0]
     task_history.history.update({date_now: result})
     task_history.save()
-    logger.info(f'Task finished: result = {result}')
+    # logger.info(f'Task finished: result = {result}')
 
 
 

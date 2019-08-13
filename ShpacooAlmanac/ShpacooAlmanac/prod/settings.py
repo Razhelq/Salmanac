@@ -9,15 +9,11 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-from __future__ import absolute_import, unicode_literals
+
 import os
 from builtins import locals
 
 import django_heroku, dj_database_url
-
-
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
-CELERY_TIMEZONE = 'Europe/Warsaw'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,7 +28,7 @@ SECRET_KEY = 'hc99p05e^l)t9#q*owa0rv#h=&*m$8xb1@3#1wcz_zc23tv!c)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://rocky-brushlands-52104.herokuapp.com/']
 
 
 # Application definition
@@ -78,15 +74,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ShpacooAlmanac.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'NAME': 'salmanac',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'USER': 'postgres',
-        'PASSWORD': 'H45l0111',
-        'HOST': 'localhost'
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(default='postgres://bczpaszxevucyz:6dc9bf52e3295b8e5d7a19140bc4be4761416629d23c41487f3a53d23c62920c@ec2-50-17-231-192.compute-1.amazonaws.com:5432/d3bu2jtd0inuft')
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -127,3 +117,16 @@ USE_TZ = False
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
+
+
+# Connections limit
+BROKER_POOL_LIMIT = 3
+
+
+# CloudAMQP RabbitMQ url
+BROKER_URL = 'amqp://kbqcknng:dGfMhSx4bOSjalldkfA6WF9Fwylkx4H0@eagle.rmq.cloudamqp.com/kbqcknng'
+CELERY_BROKER_URL = 'amqp://kbqcknng:dGfMhSx4bOSjalldkfA6WF9Fwylkx4H0@eagle.rmq.cloudamqp.com/kbqcknng'

@@ -9,15 +9,11 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-from __future__ import absolute_import, unicode_literals
+
 import os
 from builtins import locals
 
 import django_heroku, dj_database_url
-
-
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost//'
-CELERY_TIMEZONE = 'Europe/Warsaw'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,7 +79,7 @@ DATABASES = {
         'NAME': 'salmanac',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'USER': 'postgres',
-        'PASSWORD': 'H45l0111',
+        'PASSWORD': 'coderslab',
         'HOST': 'localhost'
     }
 }
