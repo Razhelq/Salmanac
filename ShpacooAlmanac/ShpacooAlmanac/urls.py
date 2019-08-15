@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistView, FindAlbumView, DisplayAlbumsView, \
-    IndexView, DeleteArtistView
+    IndexView, DeleteArtistView, FindAlbumView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^find_album/(?P<id>(\d)*)/$', FindAlbumView.as_view(), name='find-album'),
     url(r'^display_album/', DisplayAlbumsView.as_view(), name='display-albums'),
     url(r'^delete_artist/(?P<id>(\d)*)/$', DeleteArtistView.as_view(), name='delete-artist'),
+    url(r'^find_album/', FindAlbumView.as_view(), name='find-album')
 ]
