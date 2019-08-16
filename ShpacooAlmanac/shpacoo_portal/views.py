@@ -69,6 +69,7 @@ class AddArtistView(View):
             artist_name = form.cleaned_data['name']
             try:
                 artist = Artist.objects.get(name=artist_name)
+                artist.user.add(request.user)
             except ObjectDoesNotExist:
                 Artist.objects.create(name=artist_name)
                 artist = Artist.objects.get(name=artist_name)
