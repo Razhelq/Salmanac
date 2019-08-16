@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import re
 from datetime import datetime
+from time import sleep
 
 import bs4, requests
 from django.contrib.auth import login, authenticate
@@ -96,6 +97,7 @@ class FindAlbumsView(View):
         for artist in artists:
             HipHopDxScraper.get(self, request, artist.id)
             GeniusScraper.get(self, request, artist.id)
+            sleep(60)
         return redirect('display-albums')
 
 
