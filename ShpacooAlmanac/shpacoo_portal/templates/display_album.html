@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <center><a href="{% url 'find-album' %}">Look for new albums</a></center><br><br>
+    <center><a href="{% url 'find-albums' %}">Look for new albums</a></center><br><br>
     {% for artist in artists|dictsort:"name" %}
         {{ artist.name }} <a href="{% url 'delete-artist' artist.id %}"><i>Remove artist</i></a><br><br>
         {% for album in albums %}

@@ -88,6 +88,16 @@ class FindAlbumView(View):
         return redirect('display-albums')
 
 
+class FindAlbumsView(View):
+
+    def get(self, request):
+        artists = Artist.objects.filter(user__username=request.user)
+        for artist in artists:
+            HipHopDxScraper.get(self, request, artist.id)
+            GeniusScraper.get(self, request, artist.id)
+        return redirect('display-albums')
+
+
 class HipHopDxScraper(View):
 
     def get(self, request, id):

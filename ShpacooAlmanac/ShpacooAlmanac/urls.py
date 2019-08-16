@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist'),
     url(r'^find_album/(?P<id>(\d)*)/$', FindAlbumView.as_view(), name='find-album'),
-    url(r'^display_album/', DisplayAlbumsView.as_view(), name='display-albums'),
+    url(r'^display_album/$', DisplayAlbumsView.as_view(), name='display-albums'),
     url(r'^delete_artist/(?P<id>(\d)*)/$', DeleteArtistView.as_view(), name='delete-artist'),
-    url(r'^find_album/', FindAlbumView.as_view(), name='find-album')
+    url(r'^find_albums/$', FindAlbumView.as_view(), name='find-albums')
 ]
