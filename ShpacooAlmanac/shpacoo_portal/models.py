@@ -19,3 +19,9 @@ class Album(models.Model):
     title = models.CharField(max_length=128)
     release_date = models.DateTimeField()
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+
+
+class ScrappedData(models.Model):
+    artist_name = models.CharField(max_length=128)
+    title = models.CharField(max_length=128)
+    release_date = models.DateTimeFiled()
