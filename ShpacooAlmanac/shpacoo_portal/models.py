@@ -24,4 +24,4 @@ class Album(models.Model):
 class ScrappedData(models.Model):
     artist_name = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
-    release_date = models.DateTimeFiled()
+    release_date = models.DateTimeField()
