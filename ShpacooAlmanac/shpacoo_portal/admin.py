@@ -19,3 +19,6 @@ class AlbumModel(admin.ModelAdmin):
 @admin.register(ScrappedData)
 class ScrappedDataModel(admin.ModelAdmin):
     last_display = ['title', 'release_album', 'artist_name']
+    search_fields = (
+        'artist_name',
+    )

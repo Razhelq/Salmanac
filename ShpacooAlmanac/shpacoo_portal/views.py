@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 import re
+from builtins import Exception
 from datetime import datetime
 
 import bs4, requests
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -98,7 +99,7 @@ class FindAlbumsView(View):
         for artist in artists:
             try:
                 scrapped_data = ScrappedData.objects.get(artist_name=artist.name)
-                Album.objects.create(title=scrapped_data.release_date, release_date=scrapped_data.release_date,
+                Album.objects.get_or_create(title=scrapped_data.title, release_date=scrapped_data.release_date,
                                      artist=artist)
             except ObjectDoesNotExist:
                 pass
@@ -116,22 +117,25 @@ class HipHopDxAllScraper(View):
             for album in albums:
                 if album.em:
                     # sought_artist = Artist.objects.get(id=id)
-                    artist_name = ''.join(album.em.text.lower().split())
-                    date = album.find_all_previous('p')[1].text
-                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
-                        date = datetime.strptime(date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                    artist_name = ''.join(album.em.text.split())
+                    release_date = album.find_all_previous('p')[1].text
+                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date):
+                        release_date = datetime.strptime(release_date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                     else:
                         all_previous_p_tags = album.find_all_previous('p')
                         for p_tag in all_previous_p_tags:
-                            date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
-                            if date:
-                                date = datetime.strptime(date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                            release_date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
+                            if release_date:
+                                release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                                 break
                     title = album.text.replace(album.em.text, '')
+                    print(title)
+                    print(release_date)
+                    print(artist_name)
                     try:
-                        ScrappedData.objects.filter(title=title)
-                    except ObjectDoesNotExist:
-                        ScrappedData.objects.create(title=title, release_date=date, artist_name=artist_name)
+                        ScrappedData.objects.get(title=title, release_date=release_date)
+                    except (ObjectDoesNotExist, MultipleObjectsReturned):
+                        ScrappedData.objects.create(title=title, release_date=release_date, artist_name=artist_name)
 
 
 class GeniusAllScraper(View):
@@ -161,20 +165,20 @@ class GeniusAllScraper(View):
             # print(month_data_dict)
             for date, albums in month_data_dict.items():
                 for album in albums:
-                    artist_name = album.split(' - ')[0].lower()
+                    artist_name = album.split(' - ')[0]
                     # print('name ' + sought_artist.name.lower() + ' ' + artist_name.lower())
-                    artist_name = artist_name.lower()
+                    # artist_name = artist_name.lower()
                     if date != 'TBA' and date:
                         release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
                     else:
-                        release_date = 0
+                        release_date = '2222-11-11'
                     title = ' '.join(album.split(' - ')[1:(-1 if '/' in album.split(' - ')[-1] else 0)])
-                    # print(title)
-                    # print(release_date)
-                    # print(sought_artist)
+                    print(title)
+                    print(release_date)
+                    print(artist_name)
                     try:
-                        ScrappedData.objects.filter(title=title)
-                    except ObjectDoesNotExist:
+                        ScrappedData.objects.get(title=title, release_date=release_date)
+                    except (ObjectDoesNotExist, MultipleObjectsReturned):
                         ScrappedData.objects.create(title=title, release_date=release_date, artist_name=artist_name)
 
 
@@ -190,21 +194,26 @@ class HipHopDxScraper(View):
                 if album.em:
                     sought_artist = Artist.objects.get(id=id)
                     if ''.join(album.em.text.lower().split()) == ''.join(sought_artist.name.lower().split()):
-                        date = album.find_all_previous('p')[1].text
-                        if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', date):
-                            date = datetime.strptime(date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                        release_date = album.find_all_previous('p')[1].text
+                        if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date):
+                            release_date = datetime.strptime(release_date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                         else:
                             all_previous_p_tags = album.find_all_previous('p')
                             for p_tag in all_previous_p_tags:
-                                date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
-                                if date:
-                                    date = datetime.strptime(date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                                release_date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
+                                if release_date:
+                                    release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                                     break
                         title = album.text.replace(album.em.text, '')
-                        try:
-                            Album.objects.filter(title=title)
-                        except ObjectDoesNotExist:
-                            Album.objects.create(title=title, release_date=date, artist=sought_artist)
+                        print(title)
+                        print(release_date)
+                        print(sought_artist.name)
+                        Album.objects.get_or_create(title=title, release_date=release_date, artist=sought_artist)
+                        #     print(albums)
+                        # except Exception as e:
+                        #     print(e)
+                        # except ObjectDoesNotExist:
+                        #     Album.objects.create(title=title, release_date=date, artist=sought_artist)
 
 
 class GeniusScraper(View):
@@ -240,15 +249,17 @@ class GeniusScraper(View):
                         if date != 'TBA' and date:
                             release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
                         else:
-                            release_date = 0
+                            '2222-11-11'
                         title = ' '.join(album.split(' - ')[1:(-1 if '/' in album.split(' - ')[-1] else 0)])
                         print(title)
                         print(release_date)
-                        print(sought_artist)
-                        try:
-                            Album.objects.filter(title=title)
-                        except ObjectDoesNotExist:
-                            Album.objects.create(title=title, release_date=release_date, artist=sought_artist)
+                        print(sought_artist.name)
+                        Album.objects.get_or_create(title=title, release_date=release_date, artist=sought_artist)
+                        #     print(album)
+                        # except Exception as e:
+                        #     print(e)
+                        # except ObjectDoesNotExist:
+                        #     Album.objects.create(title=title, release_date=release_date, artist=sought_artist)
             
 
 class DisplayAlbumsView(View):
