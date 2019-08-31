@@ -1,0 +1,41 @@
+.col-md-4 {
+    padding-bottom: 15px;
+}
+
+.pb-4, .py-4 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.small, small {
+    font-size: 70%;
+    letter-spacing: 0.02em;
+}
+
+.contact-section .card hr {
+    border-color: #64a19d;
+    border-width: .1rem;
+    width: 10rem;
+}
+
+.my-4 {
+    margin-bottom: 5px !important;
+    margin-top: 10px !important;
+}
+
+.contact-section .card h4 {
+    font-size: .8rem;
+    font-family: 'Varela Round';
+    letter-spacing: 0.03rem;
+    text-transform: none;
+    margin-bottom: -8px;
+}
+
+.delete a {
+    font-size: 60%;
+    color: #dc3545 !important;
+}
+
+.custom-black {
+    color: #000000;
+}
