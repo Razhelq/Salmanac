@@ -39,3 +39,62 @@
 .custom-black {
     color: #000000;
 }
+
+.navbar-custom {
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.btn-primary:hover {
+    background-color: gray;
+    color: white;
+}
+
+.btn-primary:focus {
+  background-color: #4f837f;
+  color: white;
+}
+
+.btn-primary {
+    background-color: black;
+}
+
+.btn-primary:active {
+  background-color: black !important;
+}
+
+#mainNav .navbar-toggler {
+  font-size: 80%;
+  padding: 0.75rem;
+  color: black;
+  border: 1px solid black;
+}
+
+@media (min-width: 992px) {
+  #mainNav .navbar-brand {
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  }
+  #mainNav .nav-link {
+    -webkit-transition: none;
+    transition: none;
+    padding: 2rem 1.5rem;
+    color: white;
+  }
+  #mainNav .nav-link:hover {
+    color: red;
+  }
+  #mainNav .nav-link:active {
+    color: white;
+  }
+}
+
+.about-section {
+    background: linear-gradient(to bottom,#161616 0,#161616 75%,#161616 100%);
+}
+
+.bg-black {
+
+    background-color: #161616 !important;
+
+}
