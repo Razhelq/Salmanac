@@ -51,7 +51,7 @@
 }
 
 .btn-primary:focus {
-  background-color: #4f837f;
+  background-color: black;
   color: white;
 }
 
@@ -82,10 +82,21 @@
     color: white;
   }
   #mainNav .nav-link:hover {
-    color: red;
+    color: gray;
   }
   #mainNav .nav-link:active {
     color: white;
+  }
+  #mainNav.navbar-shrink .nav-link:hover {
+    color: gray;
+  }
+  #mainNav.navbar-shrink .nav-link:active {
+    color: black;
+  }
+  #mainNav.navbar-shrink .nav-link.active {
+    color: black;
+    outline: none;
+    border-bottom: 0.25rem solid black;
   }
 }
 
@@ -94,7 +105,17 @@
 }
 
 .bg-black {
-
     background-color: #161616 !important;
+}
 
+.contact-section .card {
+    border-bottom: .25rem solid gray;
+}
+
+.contact-section {
+    padding: 1rem 0 0;
+}
+
+.about-section {
+    padding-top: 1rem;
 }

@@ -4,7 +4,7 @@
     <section id="albums" class="contact-section bg-black">
         <div class="container">
 
-            <center><a href="{% url 'find-albums' %}">Look for new albums</a></center><br><br>
+            <center><a href="{% url 'find-albums' %}" class="btn btn-primary js-scroll-trigger">Look for new albums</a></center><br><br>
 
             <div class="row">
                 {% for artist in artists|dictsort:"name" %}
@@ -31,5 +31,4 @@
             </div>
         </div>
     </section>
-    <br><br>
 {% endblock %}
