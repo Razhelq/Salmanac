@@ -1,0 +1,121 @@
+.col-md-4 {
+    padding-bottom: 15px;
+}
+
+.pb-4, .py-4 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.small, small {
+    font-size: 70%;
+    letter-spacing: 0.02em;
+}
+
+.contact-section .card hr {
+    border-color: #64a19d;
+    border-width: .1rem;
+    width: 10rem;
+}
+
+.my-4 {
+    margin-bottom: 5px !important;
+    margin-top: 10px !important;
+}
+
+.contact-section .card h4 {
+    font-size: .8rem;
+    font-family: 'Varela Round';
+    letter-spacing: 0.03rem;
+    text-transform: none;
+    margin-bottom: -8px;
+}
+
+.delete a {
+    font-size: 60%;
+    color: #dc3545 !important;
+}
+
+.custom-black {
+    color: #000000;
+}
+
+.navbar-custom {
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.btn-primary:hover {
+    background-color: gray;
+    color: white;
+}
+
+.btn-primary:focus {
+  background-color: black;
+  color: white;
+}
+
+.btn-primary {
+    background-color: black;
+}
+
+.btn-primary:active {
+  background-color: black !important;
+}
+
+#mainNav .navbar-toggler {
+  font-size: 80%;
+  padding: 0.75rem;
+  color: black;
+  border: 1px solid black;
+}
+
+@media (min-width: 992px) {
+  #mainNav .navbar-brand {
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  }
+  #mainNav .nav-link {
+    -webkit-transition: none;
+    transition: none;
+    padding: 2rem 1.5rem;
+    color: white;
+  }
+  #mainNav .nav-link:hover {
+    color: gray;
+  }
+  #mainNav .nav-link:active {
+    color: white;
+  }
+  #mainNav.navbar-shrink .nav-link:hover {
+    color: gray;
+  }
+  #mainNav.navbar-shrink .nav-link:active {
+    color: black;
+  }
+  #mainNav.navbar-shrink .nav-link.active {
+    color: black;
+    outline: none;
+    border-bottom: 0.25rem solid black;
+  }
+}
+
+.about-section {
+    background: linear-gradient(to bottom,#161616 0,#161616 75%,#161616 100%);
+}
+
+.bg-black {
+    background-color: #161616 !important;
+}
+
+.contact-section .card {
+    border-bottom: .25rem solid gray;
+}
+
+.contact-section {
+    padding: 1rem 0 0;
+}
+
+.about-section {
+    padding-top: 1rem;
+}

@@ -73,7 +73,9 @@ WSGI_APPLICATION = 'ShpacooAlmanac.wsgi.application'
 
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(default='postgres://bczpaszxevucyz:6dc9bf52e3295b8e5d7a19140bc4be4761416629d23c41487f3a53d23c62920c@ec2-50-17-231-192.compute-1.amazonaws.com:5432/d3bu2jtd0inuft')
+DATABASES['default'] = dj_database_url.config(
+    default='postgres://bczpaszxevucyz:6dc9bf52e3295b8e5d7a19140bc4be4761416629d23c41487f3a53d23c62920c@ec2-50-17-231-192.compute-1.amazonaws.com:5432/d3bu2jtd0inuft'
+)
 
 
 # Password validation
