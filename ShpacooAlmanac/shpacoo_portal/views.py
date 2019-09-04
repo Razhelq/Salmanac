@@ -125,7 +125,7 @@ class HipHopDxAllScraper(View):
                         all_previous_p_tags = album.find_all_previous('p')
                         for p_tag in all_previous_p_tags:
                             release_date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
-                            if release_date:
+                            if release_date[:4].lower() in ['jen', 'feb', 'mar', 'apr', 'may','jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']:
                                 release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                                 break
                     title = album.text.replace(album.em.text, '')
