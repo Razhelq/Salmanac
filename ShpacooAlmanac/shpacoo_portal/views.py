@@ -99,8 +99,11 @@ class FindAlbumsView(View):
         for artist in artists:
             try:
                 scrapped_data = ScrappedData.objects.get(artist_name=artist.name)
-                Album.objects.get_or_create(title=scrapped_data.title, release_date=scrapped_data.release_date,
-                                     artist=artist)
+                Album.objects.get_or_create(
+                    title=scrapped_data.title,
+                    release_date=scrapped_data.release_date,
+                    artist=artist
+                )
             except ObjectDoesNotExist:
                 pass
         return redirect('display-albums')
@@ -116,22 +119,43 @@ class HipHopDxAllScraper(View):
             albums = soup.select('.album a')
             for album in albums:
                 if album.em:
+                    print('start')
                     # sought_artist = Artist.objects.get(id=id)
-                    artist_name = ''.join(album.em.text.split())
+                    artist_name = ' '.join(album.em.text.split())
                     release_date = album.find_all_previous('p')[1].text
                     if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date):
                         release_date = datetime.strptime(release_date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                        print('1 ---', release_date)
                     else:
                         all_previous_p_tags = album.find_all_previous('p')
                         for p_tag in all_previous_p_tags:
                             release_date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
-                            if release_date[:4].lower() in ['jen', 'feb', 'mar', 'apr', 'may','jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']:
-                                release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
-                                break
-                    title = album.text.replace(album.em.text, '')
+                            if release_date:
+                                print(release_date[0])
+                                if release_date[0].split()[0].lower() in ['jen', 'feb', 'mar', 'apr', 'may', 'jun',
+                                                                          'jul', 'aug', 'sep', 'oct', 'nov', 'dec']:
+                                    release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime(
+                                        '%Y-%m-%d')
+                                    print('2 ---', release_date)
+                                    break
+                    print(album.em.text)
+                    print(album.text)
+                    title = ''
+                    album_name = list(album.text)
+                    print(album_name)
+                    count = len(artist_name) - 1
+                    for j in album.text[::-1]:
+                        if j == artist_name[count]:
+                            print(j, artist_name[-1])
+                            album_name.pop()
+                            count -= 1
+                        else:
+                            break
+                    title = ''.join(album_name)
                     print(title)
-                    print(release_date)
+                    print('3 ---', release_date)
                     print(artist_name)
+                    print('end')
                     try:
                         ScrappedData.objects.get(title=title, release_date=release_date)
                     except (ObjectDoesNotExist, MultipleObjectsReturned):
@@ -209,7 +233,7 @@ class HipHopDxScraper(View):
                         print(release_date)
                         print(sought_artist.name)
                         Album.objects.get_or_create(title=title, release_date=release_date, artist=sought_artist)
-                        #     print(albums)
+                        # print(albums)
                         # except Exception as e:
                         #     print(e)
                         # except ObjectDoesNotExist:

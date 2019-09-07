@@ -11,6 +11,7 @@ class Artist(models.Model):
         verbose_name='Artist picture',
         upload_to='pictures/',
         null=True,
+        blank=True,
     )
     user = models.ManyToManyField(User)
 
