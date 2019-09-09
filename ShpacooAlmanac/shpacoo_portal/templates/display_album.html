@@ -1,34 +1,34 @@
-{% extends "index.html" %}
-{% block albums %}
+{% extends 'index.html' %}
+    {% block albums %}
 
-    <section id="albums" class="contact-section bg-black">
-        <div class="container">
+        <section id="albums" class="contact-section bg-black">
+            <div class="container">
 
-            <center><a href="{% url 'find-albums' %}" class="btn btn-primary js-scroll-trigger">Look for new albums</a></center><br><br>
+                <center><a href="{% url 'find-albums' %}" class="btn btn-primary js-scroll-trigger">Look for new albums</a></center><br><br>
 
-            <div class="row">
-                {% for artist in artists|dictsort:"name" %}
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-4 h-100">
-                            <div class="card-body text-center">
-                                <h4>{{ artist.name }}</h4>
-                                <div class="delete">
-                                    <a href="{% url 'delete-artist' artist.id %}"><i>Remove</i></a>
+                <div class="row">
+                    {% for artist in artists|dictsort:"name" %}
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="card py-4 h-100">
+                                <div class="card-body text-center">
+                                    <h4>{{ artist.name }}</h4>
+                                    <div class="delete">
+                                        <a href="{% url 'delete-artist' artist.id %}"><i>Remove</i></a>
+                                    </div>
+                                    <hr class="my-4">
+                                    {% for album in albums %}
+                                        {% if album.artist.name == artist.name %}
+                                            <div class="small text-black-50">
+                                                Title: <span class="custom-black">{{ album.title }}</span><br>
+                                                Release date: <span class="custom-black">{{ album.release_date|date:'M d, Y' }}</span>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                                <hr class="my-4">
-                                {% for album in albums %}
-                                    {% if album.artist.name == artist.name %}
-                                        <div class="small text-black-50">
-                                            Title: <span class="custom-black">{{ album.title }}</span><br>
-                                            Release date: <span class="custom-black">{{ album.release_date|date:'M d, Y' }}</span>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    </section>
-{% endblock %}
+        </section>
+    {% endblock %}

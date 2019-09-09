@@ -46,7 +46,7 @@ class LoginView(View):
         if not request.user.is_authenticated:
             form = LoginForm()
             return render(request, 'login.html', {'form': form})
-        return redirect('add-artist')
+        return redirect('display-albums')
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -54,7 +54,7 @@ class LoginView(View):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user:
                 login(request, user)
-                return redirect('add-artist')
+                return redirect('display-albums')
         return redirect('login')
 
 
