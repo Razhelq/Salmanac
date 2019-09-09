@@ -1,0 +1,12 @@
+sudo heroku container:push web -a rocky-brushlands-52104  
+sudo heroku container:release web -a rocky-brushlands-52104 
+
+
+
+sudo heroku addons:add cloudamqp -a rocky-brushlands-52104 
+
+? sudo heroku container:python manage.py migrate -a rocky-brushlands-52104 
+
+heroku run python manage.py migrate
+
+heroku ps: scale web=1
