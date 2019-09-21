@@ -11,6 +11,7 @@ class Artist(models.Model):
         verbose_name='Artist picture',
         upload_to='pictures/',
         null=True,
+        blank=True,
     )
     user = models.ManyToManyField(User)
 
@@ -18,7 +19,11 @@ class Artist(models.Model):
 class Album(models.Model):
     title = models.CharField(max_length=128)
     release_date = models.DateTimeField()
-    artist = models.ForeignKey(Artist, on_delete=models.DO_NOTHING)
+    artist = models.ForeignKey(
+        Artist,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
 
 
 class ScrappedData(models.Model):

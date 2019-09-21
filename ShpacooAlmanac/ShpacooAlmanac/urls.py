@@ -16,8 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistView, FindAlbumView, DisplayAlbumsView, \
-    IndexView, DeleteArtistView, FindAlbumView, FindAlbumsView
+from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistView, DisplayAlbumsView, \
+    IndexView, DeleteArtistView, FindAlbumsView, LogoutView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,8 +25,9 @@ urlpatterns = [
     url(r'^test/$', TestView.as_view(), name='test'),
     url(r'^$', UserCreateView.as_view(), name='user-create'),
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'logout/$', LogoutView.as_view(), name='logout'),
     url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist'),
-    url(r'^find_album/(?P<id>(\d)*)/$', FindAlbumView.as_view(), name='find-album'),
+    # url(r'^find_album/(?P<id>(\d)*)/$', FindAlbumView.as_view(), name='find-album'),
     url(r'^display_album/$', DisplayAlbumsView.as_view(), name='display-albums'),
     url(r'^delete_artist/(?P<id>(\d)*)/$', DeleteArtistView.as_view(), name='delete-artist'),
     url(r'^find_albums/$', FindAlbumsView.as_view(), name='find-albums')
