@@ -119,3 +119,21 @@
 .about-section {
     padding-top: 1rem;
 }
+
+.newa {
+    position: absolute;
+    margin-bottom: 10px;
+}
+
+.add-art {
+    position: absolute !important;
+}
+
+.add-art label {
+    display: None !important;
+}
+
+.add-art-butt {
+    position: absolute;
+    display: inline !important;
+}

@@ -92,64 +92,14 @@
   <!-- Signup Section -->
   {% if not user.is_authenticated %}
     {% block login %}
-      <section id="signup" class="signup-section">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-10 col-lg-8 mx-auto text-center">
 
-                  <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-                  <h2 class="text-white mb-5">Login</h2>
-
-<!--                  <form class="form-inline d-flex">-->
-                    <form action="{% url 'login' %}" method="POST">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    <button type="submit">Login</button>
-                    </form>
-        <!--            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">-->
-        <!--            <button type="submit" class="btn btn-primary mx-auto">Subscribe</button>-->
-<!--                  </form>-->
-
-                </div>
-              </div>
-            </div>
-          </section>
     {% endblock %}
   {% endif %}
 
   <!-- Albums Section -->
   {% if user.is_authenticated %}
     {% block albums %}
-      <section id="albums" class="contact-section bg-black">
-            <div class="container">
 
-                <center><a href="{% url 'find-albums' %}" class="btn btn-primary js-scroll-trigger">Look for new albums</a></center><br><br>
-
-                <div class="row">
-                    {% for artist in artists|dictsort:"name" %}
-                        <div class="col-md-4 mb-3 mb-md-0">
-                            <div class="card py-4 h-100">
-                                <div class="card-body text-center">
-                                    <h4>{{ artist.name }}</h4>
-                                    <div class="delete">
-                                        <a href="{% url 'delete-artist' artist.id %}"><i>Remove</i></a>
-                                    </div>
-                                    <hr class="my-4">
-                                    {% for album in albums %}
-                                        {% if album.artist.name == artist.name %}
-                                            <div class="small text-black-50">
-                                                Title: <span class="custom-black">{{ album.title }}</span><br>
-                                                Release date: <span class="custom-black">{{ album.release_date|date:'M d, Y' }}</span>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
     {% endblock %}
   {% endif %}
 

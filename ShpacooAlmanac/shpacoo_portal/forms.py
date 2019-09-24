@@ -13,5 +13,4 @@ class LoginForm(forms.Form):
 
 
 class AddArtistForm(forms.Form):
-    name = forms.CharField(label='Name')
-
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter new artist...'}))

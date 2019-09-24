@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form action="{% url 'add-artist' %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add</button>
-    </form>
-</body>
-</html>
+{% extends 'display_album.html' %}
+{% extends 'index.html' %}
+    {% block new_artist %}
+        <form action="{% url 'add-artist' %}" method="POST" class="form-inline d-flex">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add</button>
+        </form>
+        XXX
+    {% enblock %}

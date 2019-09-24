@@ -69,9 +69,9 @@ class LogoutView(View):
 
 class AddArtistView(View):
 
-    def get(self, request):
-        form = AddArtistForm()
-        return render(request, 'add_artist.html', {'form': form})
+    # def get(self, request):
+    #     form = AddArtistForm()
+    #     return render(request, 'add_artist.html', {'form': form})
 
     def post(self, request):
         form = AddArtistForm(request.POST)
@@ -300,7 +300,8 @@ class DisplayAlbumsView(View):
     def get(self, request):
         artists = Artist.objects.filter(user__username=request.user)
         albums = Album.objects.filter(artist__in=artists)
-        return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user})
+        form = AddArtistForm()
+        return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user, 'add_artist_form': form})
 
 
 class DeleteArtistView(View):
