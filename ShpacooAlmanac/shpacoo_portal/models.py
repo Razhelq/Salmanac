@@ -30,3 +30,6 @@ class ScrappedData(models.Model):
     artist_name = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
     release_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.artist_name

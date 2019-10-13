@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 import re
-from builtins import Exception
+from builtins import Exception, ValueError
 from datetime import datetime
 
 import bs4, requests
@@ -107,12 +107,13 @@ class FindAlbumsView(View):
         artists = Artist.objects.filter(user__username=request.user)
         for artist in artists:
             try:
-                scrapped_data = ScrappedData.objects.get(artist_name=artist.name)
-                Album.objects.get_or_create(
-                    title=scrapped_data.title,
-                    release_date=scrapped_data.release_date,
-                    artist=artist
-                )
+                scrapped_data = ScrappedData.objects.filter(artist_name=artist.name)
+                for single_scrapped_data in scrapped_data:
+                    Album.objects.get_or_create(
+                        title=single_scrapped_data.title,
+                        release_date=single_scrapped_data.release_date,
+                        artist=artist
+                    )
             except ObjectDoesNotExist:
                 pass
         return redirect('display-albums')
@@ -140,8 +141,8 @@ class HipHopDxAllScraper(View):
                         for p_tag in all_previous_p_tags:
                             release_date = re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', str(p_tag))
                             if release_date:
-                                print(release_date[0])
-                                if release_date[0].split()[0].lower() in ['jen', 'feb', 'mar', 'apr', 'may', 'jun',
+                                print('pre 2', release_date[0])
+                                if release_date[0].split()[0].lower() in ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
                                                                           'jul', 'aug', 'sep', 'oct', 'nov', 'dec']:
                                     release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime(
                                         '%Y-%m-%d')
@@ -153,13 +154,17 @@ class HipHopDxAllScraper(View):
                     album_name = list(album.text)
                     print(album_name)
                     count = len(artist_name) - 1
+                    print('count -', count)
                     for j in album.text[::-1]:
-                        if j == artist_name[count]:
-                            print(j, artist_name[-1])
-                            album_name.pop()
-                            count -= 1
-                        else:
-                            break
+                        try:
+                            if j == artist_name[count]:
+                                print(j, artist_name[-1])
+                                album_name.pop()
+                                count -= 1
+                            else:
+                                break
+                        except IndexError:
+                            pass
                     title = ''.join(album_name)
                     print(title)
                     print('3 ---', release_date)
@@ -202,7 +207,10 @@ class GeniusAllScraper(View):
                     # print('name ' + sought_artist.name.lower() + ' ' + artist_name.lower())
                     # artist_name = artist_name.lower()
                     if date != 'TBA' and date:
-                        release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
+                        try:
+                            release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
+                        except ValueError:
+                            print('To fix later - if there is one more <br> between albums it takes the name as a date')
                     else:
                         release_date = '2222-11-11'
                     title = ' '.join(album.split(' - ')[1:(-1 if '/' in album.split(' - ')[-1] else 0)])
