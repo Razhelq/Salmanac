@@ -121,12 +121,12 @@
 }
 
 .newa {
-    position: absolute;
+    position: static;
     margin-bottom: 10px;
 }
 
 .add-art {
-    position: absolute !important;
+    position: static !important;
 }
 
 .add-art label {
@@ -134,6 +134,6 @@
 }
 
 .add-art-butt {
-    position: absolute;
     display: inline !important;
+    position: static !important;
 }
