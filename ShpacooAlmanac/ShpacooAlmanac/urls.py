@@ -21,9 +21,9 @@ from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistV
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^index/$', IndexView.as_view(), name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^test/$', TestView.as_view(), name='test'),
-    url(r'^$', UserCreateView.as_view(), name='user-create'),
+    url(r'^register/$', UserCreateView.as_view(), name='register'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'logout/$', LogoutView.as_view(), name='logout'),
     url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist'),

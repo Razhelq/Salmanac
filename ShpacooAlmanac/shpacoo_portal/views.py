@@ -23,7 +23,9 @@ class TestView(View):
 
 class IndexView(View):
     def get(self, request):
-        return render(request, 'index.html')
+        if request.user.is_authenticated:
+            return redirect('display-albums')
+        return redirect('login')
 
 
 class UserCreateView(View):
@@ -37,7 +39,7 @@ class UserCreateView(View):
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
             return redirect('login')
-        return redirect('user-create')
+        return redirect('register')
 
 
 class LoginView(View):
