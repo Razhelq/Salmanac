@@ -3,10 +3,8 @@
 
         <section id="albums" class="contact-section bg-black">
             <div class="container">
-<!--                {% block new_artist %}-->
                           <div class="row">
                             <div class="col-md-10 col-lg-8 mx-auto text-center">
-<!--                              <h2 class="text-white mb-5 adda">Add new artist!</h2>-->
                               <form action="{% url 'add-artist' %}" method="POST" class="d-flex add-art">
                                   {% csrf_token %}
                                   {{ add_artist_form.as_p }}
@@ -15,16 +13,7 @@
                               <a href="{% url 'find-albums' %}" class="btn btn-primary js-scroll-trigger mx-auto newa">Look for new albums</a>
                             </div>
                           </div>
-<!--                {% endblock %}-->
-<!--                <form action="{% url 'add-artist' %}" method="POST" class="d-flex add-art">-->
-<!--                    {% csrf_token %}-->
-<!--                    {{ add_artist_form.as_p }}-->
-<!--                    <button type="submit" class="btn btn-primary js-scroll-trigger add-art-butt">Add</button>-->
-<!--                </form>-->
-
-
                 <br><br>
-
                 <div class="row">
                     {% for artist in artists|dictsort:"name" %}
                         <div class="col-md-4 mb-3 mb-md-0">
