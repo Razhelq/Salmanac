@@ -94,12 +94,15 @@
     {% block login %}
 
     {% endblock %}
+    <hr class="my-4">
+    {% block register %}
+
+    {% endblock %}
   {% endif %}
 
   <!-- Albums Section -->
   {% if user.is_authenticated %}
     {% block albums %}
-
     {% endblock %}
   {% endif %}
 

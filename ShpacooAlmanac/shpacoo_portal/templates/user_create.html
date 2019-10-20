@@ -1,14 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form action="{% url 'register' %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add</button>
-    </form>
-</body>
-</html>
+{% extends 'index.html' %}
+    {% block register %}
+          <section id="signup" class="signup-section signup-custom">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+
+                  <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                  <h2 class="text-white mb-5">Register</h2>
+
+<!--                  <form class="form-inline d-flex">-->
+                    <form action="{% url 'register' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    <button type="submit">Register</button>
+                    </form>
+                </div>
+        <!--            <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" placeholder="Enter email address...">-->
+        <!--            <button type="submit" class="btn btn-primary mx-auto">Subscribe</button>-->
+<!--                  </form>-->
+
+                </div>
+              </div>
+            </div>
+          </section>
+    {% endblock %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <form action="{% url 'register' %}" method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+<!--        <button type="submit">Add</button>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
