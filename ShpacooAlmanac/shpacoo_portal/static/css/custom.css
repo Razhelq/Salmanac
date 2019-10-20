@@ -138,3 +138,7 @@
     display: inline !important;
     position: static !important;
 }
+
+.signup-custom {
+    background-position: top;
+}
