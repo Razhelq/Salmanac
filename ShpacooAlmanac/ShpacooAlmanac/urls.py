@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from shpacoo_portal.views import TestView, UserCreateView, LoginView, AddArtistView, DisplayAlbumsView, \
+from shpacoo_portal.views import TestView, UserCreateView, LoginRegisterView, AddArtistView, DisplayAlbumsView, \
     IndexView, DeleteArtistView, FindAlbumsView, LogoutView
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^test/$', TestView.as_view(), name='test'),
     url(r'^register/$', UserCreateView.as_view(), name='register'),
-    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^login_register/$', LoginRegisterView.as_view(), name='login-register'),
     url(r'logout/$', LogoutView.as_view(), name='logout'),
     url(r'^add_artist/$', AddArtistView.as_view(), name='add-artist'),
     # url(r'^find_album/(?P<id>(\d)*)/$', FindAlbumView.as_view(), name='find-album'),

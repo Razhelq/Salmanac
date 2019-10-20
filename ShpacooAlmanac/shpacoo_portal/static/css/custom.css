@@ -142,3 +142,7 @@
 .signup-custom {
     background-position: top;
 }
+
+.errorlist li {
+    display: none;
+}

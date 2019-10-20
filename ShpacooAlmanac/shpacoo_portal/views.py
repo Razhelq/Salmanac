@@ -9,6 +9,7 @@ import bs4, requests
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -25,7 +26,7 @@ class IndexView(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('display-albums')
-        return redirect('login')
+        return redirect('login-register')
 
 
 class UserCreateView(View):
@@ -38,26 +39,37 @@ class UserCreateView(View):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
-            return redirect('login')
+            return redirect('login-register')
         return redirect('register')
 
 
-class LoginView(View):
+class LoginRegisterView(View):
 
     def get(self, request):
         if not request.user.is_authenticated:
-            form = LoginForm()
-            return render(request, 'login.html', {'form': form})
+            login = LoginForm()
+            register = UserCreateForm(request.POST)
+            return render(request, 'login.html', {'login': login, 'register': register})
         return redirect('display-albums')
 
     def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user:
-                login(request, user)
-                return redirect('display-albums')
-        return redirect('login')
+        login_form = LoginForm(request.POST)
+        register_form = UserCreateForm(request.POST)
+        if login_form.is_valid():
+            user = authenticate(username=login_form.cleaned_data['username'], password=login_form.cleaned_data['password'])
+            # if user:
+            #     login_form(request, user)
+            #     return redirect('display-albums')
+        if register_form.is_valid():
+            try:
+                User.objects.create_user(**register_form.cleaned_data)
+            except IntegrityError:
+                return redirect('login-register')
+            user = authenticate(username=register_form.cleaned_data['username'], password=register_form.cleaned_data['password'])
+        if user:
+            login(request, user)
+            return redirect('display-albums')
+        return redirect('login-register')
 
 
 class LogoutView(View):
