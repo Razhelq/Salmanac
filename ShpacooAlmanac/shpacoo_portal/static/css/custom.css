@@ -122,11 +122,12 @@
 
 .newa {
     position: static;
-    margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .add-art {
     position: static !important;
+    display: block !important;
 }
 
 .add-art label {
