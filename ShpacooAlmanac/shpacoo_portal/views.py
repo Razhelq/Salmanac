@@ -115,7 +115,7 @@ class HipHopDxAllScraper(View):
                 if album.em:
                     artist_name = ' '.join(album.em.text.split())
                     release_date = album.find_all_previous('p')[1].text
-                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date):
+                    if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date) and len(release_date) < 7:
                         release_date = datetime.strptime(release_date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
                     else:
                         all_previous_p_tags = album.find_all_previous('p')
