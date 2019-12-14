@@ -60,7 +60,7 @@ class LogoutView(View):
         if request.user.is_authenticated:
             logout(request)
             return redirect('index')
-        return redirect('login')
+        return redirect('login-register')
 
 
 class AddArtistView(View):
