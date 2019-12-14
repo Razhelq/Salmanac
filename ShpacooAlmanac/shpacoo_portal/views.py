@@ -189,10 +189,14 @@ class GeniusAllScraper(View):
 class DisplayAlbumsView(View):
 
     def get(self, request):
-        artists = Artist.objects.filter(user__username=request.user)
-        albums = Album.objects.filter(artist__in=artists)
-        form = AddArtistForm()
-        return render(request, 'display_album.html', {'artists': artists, 'albums': albums, 'user': request.user, 'add_artist_form': form})
+        if request.user.is_authenticated:
+            artists = Artist.objects.filter(user__username=request.user)
+            albums = Album.objects.filter(artist__in=artists)
+            form = AddArtistForm()
+            return render(request, 'display_album.html',
+                          {'artists': artists, 'albums': albums, 'user': request.user, 'add_artist_form': form})
+        return redirect('login-register')
+
 
 
 class DeleteArtistView(View):
