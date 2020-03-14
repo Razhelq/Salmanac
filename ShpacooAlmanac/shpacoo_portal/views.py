@@ -116,7 +116,7 @@ class HipHopDxAllScraper(View):
                     artist_name = ' '.join(album.em.text.split())
                     release_date = album.find_all_previous('p')[1].text
                     if re.search(r'[A-Z]{1}[a-z]{2}\W[0-9]{1,2}', release_date) and len(release_date) < 7:
-                        release_date = datetime.strptime(release_date + ' 2019', '%b %d %Y').strftime('%Y-%m-%d')
+                        release_date = datetime.strptime(release_date + ' 2020', '%b %d %Y').strftime('%Y-%m-%d')
                     else:
                         all_previous_p_tags = album.find_all_previous('p')
                         for p_tag in all_previous_p_tags:
@@ -124,7 +124,7 @@ class HipHopDxAllScraper(View):
                             if release_date:
                                 if release_date[0].split()[0].lower() in ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
                                                                           'jul', 'aug', 'sep', 'oct', 'nov', 'dec']:
-                                    release_date = datetime.strptime(release_date[0] + ' 2019', '%b %d %Y').strftime(
+                                    release_date = datetime.strptime(release_date[0] + ' 2020', '%b %d %Y').strftime(
                                         '%Y-%m-%d')
                                     break
                     title = ''
@@ -155,7 +155,7 @@ class GeniusAllScraper(View):
         for month in range(int(current_month), 13):
             try:
                 scrapped_website = requests.get(
-                    f"https://genius.com/Genius-{months[month]}-2019-album-release-calendar-annotated")
+                    f"https://genius.com/Genius-{months[month]}-2020-album-release-calendar-annotated")
             except IndexError:
                 break
             soup = bs4.BeautifulSoup(scrapped_website.text, features='html.parser')
@@ -174,7 +174,7 @@ class GeniusAllScraper(View):
                     artist_name = album.split(' - ')[0]
                     if date != 'TBA' and date:
                         try:
-                            release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2019', '%m %d %Y').strftime('%Y-%m-%d')
+                            release_date = datetime.strptime(date.split('/')[0] + ' ' + date.split('/')[1] + ' 2020', '%m %d %Y').strftime('%Y-%m-%d')
                         except ValueError:
                             print('To fix later - if there is one more <br> between albums it takes the name as a date')
                     else:
